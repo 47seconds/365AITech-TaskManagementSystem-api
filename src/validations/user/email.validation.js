@@ -1,5 +1,5 @@
 import { ApiError } from "../../utils/ApiError.util.js";
-import domains from "../../resources/domains.resource.json";
+import domains from "../../resources/domains.resource.json" with { type: "json" };
 
 export const emailValidation = (email) => {
   const domain = email.split("@");
