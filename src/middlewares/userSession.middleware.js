@@ -57,7 +57,7 @@ export const userSession = async (req, res, next) => {
                   200,
                   {},
                   loggedInUser._doc,
-                  "user already logged in",
+                  "user already logged in"
                 )
               )
           : loggedInUser._doc;

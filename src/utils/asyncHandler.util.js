@@ -1,6 +1,7 @@
 import { ApiError } from "./ApiError.util.js";
 import { ApiResponse } from "./ApiResponse.util.js";
 
+// Have ability to handle ApiResponses if thrown, lets see if we can use it later if scenerio arises
 const asyncHandler = (reqHandler) => {
   return (req, res, next) => {
     Promise.resolve(reqHandler(req, res, next)).catch((error) => {

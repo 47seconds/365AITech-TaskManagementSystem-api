@@ -121,7 +121,6 @@ export const userLogout = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, {}, "user logged out successfully"));
 });
 
-
 export const userDelete = asyncHandler(async (req, res) => {
   // Algorithm
   // 1. Get user_id from req.user._id
@@ -133,5 +132,7 @@ export const userDelete = asyncHandler(async (req, res) => {
   return res
     .clearCookie("accessToken", COOKIE_OPTIONS)
     .clearCookie("refreshToken", COOKIE_OPTIONS)
-    .json(new ApiResponse(200, deletedUser, {}, "user logged out successfully"));
-})
+    .json(
+      new ApiResponse(200, deletedUser, {}, "user logged out successfully")
+    );
+});
