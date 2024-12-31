@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   userRegistration,
   userLogin,
-  userLogout
+  userLogout,
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { userSession } from "../middlewares/userSession.middleware.js";

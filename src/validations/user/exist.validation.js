@@ -1,4 +1,4 @@
-import { ApiError } from "../../utils/error.util.js";
+import { ApiError } from "../../utils/ApiError.util.js";
 import { User } from "../../models/user.model.js";
 
 export const existValidation = async (username, email) => {

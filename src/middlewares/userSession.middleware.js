@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
-import { COOKIE_OPTIONS } from "../constants.js";
+import { COOKIE_OPTIONS } from "../config/cookie.config.js";
 import { generateAccessRefreshTokens } from "../utils/accessRefreshTokenGeneration.util.js";
-import { ApiResponse } from "../utils/response.util.js";
+import { ApiResponse } from "../utils/ApiResponse.util.js";
 
 // DON'T USE ASYNCHANDLER HERE! The call won't become async with asyncHandler, which is needed for verifyJWT
 export const userSession = async (req, res, next) => {

@@ -8,8 +8,8 @@ export const generateAccessRefreshTokens = async (user) => {
     user.refreshToken = refreshToken;
     await user.save();
 
-    return {accessToken, refreshToken, user};
-  } catch (error) {
+    return { accessToken, refreshToken, user };
+  } catch {
     throw new ApiError(500, "failed to generate access and refresh tokens");
   }
 };
