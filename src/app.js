@@ -1,10 +1,7 @@
 import express, { urlencoded } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import {
-  userRouter,
-  taskRouter
-} from "./routes/index.js";
+import { userRouter, taskRouter, categoryRouter } from "./routes/index.js";
 
 const app = express();
 app.use(
@@ -22,6 +19,7 @@ app.use(cookieParser());
 const apiRoute = express.Router();
 apiRoute.use("/auth", userRouter);
 apiRoute.use("/tasks", taskRouter);
+apiRoute.use("/categories", categoryRouter);
 
 app.use("/api", apiRoute);
 
