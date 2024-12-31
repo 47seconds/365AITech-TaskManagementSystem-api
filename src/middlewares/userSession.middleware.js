@@ -56,8 +56,8 @@ export const userSession = async (req, res, next) => {
                 new ApiResponse(
                   200,
                   {},
+                  loggedInUser._doc,
                   "user already logged in",
-                  loggedInUser._doc
                 )
               )
           : loggedInUser._doc;
@@ -91,7 +91,7 @@ export const userSession = async (req, res, next) => {
           maxAge: 86400000 * Number(process.env.REFRESH_TOKEN_COOKIE_EXPIRY),
         }) // 10 Days
         .json(
-          new ApiResponse(200, {}, "user already logged in", loggedInUser._doc)
+          new ApiResponse(200, {}, loggedInUser._doc, "user already logged in")
         )
     : loggedInUser._doc;
 };

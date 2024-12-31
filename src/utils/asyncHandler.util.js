@@ -1,4 +1,5 @@
 import { ApiError } from "./ApiError.util.js";
+import { ApiResponse } from "./ApiResponse.util.js";
 
 const asyncHandler = (reqHandler) => {
   return (req, res, next) => {
@@ -8,7 +9,15 @@ const asyncHandler = (reqHandler) => {
           success: error.success,
           statusCode: error.statusCode,
           errors: error.errors,
-          stack: error.stack.trim(),
+          stack: error.stack?.trim(),
+          message: error.message,
+        });
+      } else if (error instanceof ApiResponse) {
+        return res.status(error.statusCode || 200).json({
+          success: error.success,
+          statusCode: error.statusCode,
+          user: error.user,
+          data: error.data,
           message: error.message,
         });
       } else {

@@ -39,8 +39,7 @@ export const userRegistration = asyncHandler(async (req, res) => {
   delete createdUser._doc.password;
   delete createdUser._doc.refreshToken;
 
-  return res
-    .status(201)
+  res
     .cookie("accessToken", accessToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.ACCESS_TOKEN_COOKIE_EXPIRY,
@@ -48,10 +47,9 @@ export const userRegistration = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.REFRESH_TOKEN_COOKIE_EXPIRY,
-    }) // 10 Days
-    .json(
-      new ApiResponse(200, {}, "user created successfully", createdUser._doc)
-    );
+    }); // 10 Days
+
+  throw new ApiResponse(200, {}, createdUser._doc, "user logged in successfully");
 });
 
 export const userLogin = asyncHandler(async (req, res) => {
@@ -82,8 +80,7 @@ export const userLogin = asyncHandler(async (req, res) => {
   delete loggedInUser._doc.password;
   delete loggedInUser._doc.refreshToken;
 
-  return res
-    .status(200)
+  res
     .cookie("accessToken", accessToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.ACCESS_TOKEN_COOKIE_EXPIRY,
@@ -91,10 +88,9 @@ export const userLogin = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.REFRESH_TOKEN_COOKIE_EXPIRY,
-    }) // 10 Days
-    .json(
-      new ApiResponse(200, {}, "user logged in successfully", loggedInUser._doc)
-    );
+    }); // 10 Days
+
+  throw new ApiResponse(200, {}, loggedInUser._doc, "user logged in successfully");
 });
 
 export const userLogout = asyncHandler(async (req, res) => {
@@ -115,9 +111,9 @@ export const userLogout = asyncHandler(async (req, res) => {
     }
   );
 
-  return res
-    .status(200)
+  res
     .clearCookie("accessToken", COOKIE_OPTIONS)
     .clearCookie("refreshToken", COOKIE_OPTIONS)
-    .json(new ApiResponse(200, {}, "user logged out successfully", {}));
+
+  throw new ApiResponse(200, {}, {}, "user logged out successfully");
 });
