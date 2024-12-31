@@ -39,7 +39,7 @@ export const userRegistration = asyncHandler(async (req, res) => {
   delete createdUser._doc.password;
   delete createdUser._doc.refreshToken;
 
-  res
+  return res
     .cookie("accessToken", accessToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.ACCESS_TOKEN_COOKIE_EXPIRY,
@@ -47,9 +47,10 @@ export const userRegistration = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.REFRESH_TOKEN_COOKIE_EXPIRY,
-    }); // 10 Days
-
-  throw new ApiResponse(200, {}, createdUser._doc, "user logged in successfully");
+    }) // 10 Days
+    .json(
+      new ApiResponse(200, {}, createdUser._id, "user logged in successfully")
+    );
 });
 
 export const userLogin = asyncHandler(async (req, res) => {
@@ -80,7 +81,7 @@ export const userLogin = asyncHandler(async (req, res) => {
   delete loggedInUser._doc.password;
   delete loggedInUser._doc.refreshToken;
 
-  res
+  return res
     .cookie("accessToken", accessToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.ACCESS_TOKEN_COOKIE_EXPIRY,
@@ -88,9 +89,10 @@ export const userLogin = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, {
       COOKIE_OPTIONS,
       maxAge: 86400000 * process.env.REFRESH_TOKEN_COOKIE_EXPIRY,
-    }); // 10 Days
-
-  throw new ApiResponse(200, {}, loggedInUser._doc, "user logged in successfully");
+    }) // 10 Days
+    .json(
+      new ApiResponse(200, {}, loggedInUser._doc, "user logged in successfully")
+    );
 });
 
 export const userLogout = asyncHandler(async (req, res) => {
@@ -99,7 +101,7 @@ export const userLogout = asyncHandler(async (req, res) => {
   // 2. Therefore, delete cookies and req.user, hence user logged out
   // 3. Also, if user logged out, there is no active refreshToken, hence update refreshToken in User model to empty
 
-  await User.findByIdAndUpdate(
+  const loggedOutUser = await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
@@ -111,9 +113,25 @@ export const userLogout = asyncHandler(async (req, res) => {
     }
   );
 
-  res
+  if (!loggedOutUser) throw new ApiError(500, "failed to logout user");
+
+  return res
     .clearCookie("accessToken", COOKIE_OPTIONS)
     .clearCookie("refreshToken", COOKIE_OPTIONS)
-
-  throw new ApiResponse(200, {}, {}, "user logged out successfully");
+    .json(new ApiResponse(200, {}, {}, "user logged out successfully"));
 });
+
+
+export const userDelete = asyncHandler(async (req, res) => {
+  // Algorithm
+  // 1. Get user_id from req.user._id
+  // 2. Delete from database
+
+  const deletedUser = await User.findByIdAndDelete(req.user._id);
+  if (!deletedUser) throw new ApiError(500, "failed to delete user account");
+
+  return res
+    .clearCookie("accessToken", COOKIE_OPTIONS)
+    .clearCookie("refreshToken", COOKIE_OPTIONS)
+    .json(new ApiResponse(200, deletedUser, {}, "user logged out successfully"));
+})
