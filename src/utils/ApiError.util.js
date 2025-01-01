@@ -1,3 +1,4 @@
+// Standard ApiError class to return systematic error response
 class ApiError extends Error {
   constructor(
     statusCode = 500,

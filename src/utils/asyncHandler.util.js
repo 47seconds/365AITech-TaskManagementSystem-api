@@ -1,7 +1,7 @@
 import { ApiError } from "./ApiError.util.js";
 import { ApiResponse } from "./ApiResponse.util.js";
 
-// Have ability to handle ApiResponses if thrown, lets see if we can use it later if scenerio arises
+// Main helper function for server-wide error handling
 const asyncHandler = (reqHandler) => {
   return (req, res, next) => {
     Promise.resolve(reqHandler(req, res, next)).catch((error) => {
@@ -14,6 +14,7 @@ const asyncHandler = (reqHandler) => {
           message: error.message,
         });
       } else if (error instanceof ApiResponse) {
+        // Have ability to handle ApiResponses if thrown, lets see if we can use it later if scenerio arises
         return res.status(error.statusCode || 200).json({
           success: error.success,
           statusCode: error.statusCode,

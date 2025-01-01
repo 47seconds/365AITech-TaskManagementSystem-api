@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import { userRouter, taskRouter, categoryRouter } from "./routes/index.js";
 
 const app = express();
+
+// credentials true to proceed with cookies too
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -17,10 +19,11 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 const apiRoute = express.Router();
-apiRoute.use("/auth", userRouter);
-apiRoute.use("/tasks", taskRouter);
-apiRoute.use("/categories", categoryRouter);
+apiRoute.use("/auth", userRouter); // user route
+apiRoute.use("/tasks", taskRouter); // task route
+apiRoute.use("/categories", categoryRouter); // category route
 
+// API home route
 app.use("/api", apiRoute);
 
 export { app };

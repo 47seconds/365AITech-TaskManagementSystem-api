@@ -2,6 +2,7 @@ import "dotenv/config";
 import { connectDB } from "./config/mongodb.config.js";
 import { app } from "./app.js";
 
+// Connection to database and proceeding with the application
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {

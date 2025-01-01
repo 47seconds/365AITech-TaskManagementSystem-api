@@ -5,6 +5,7 @@ export const generateAccessRefreshTokens = async (user) => {
     const accessToken = await user.generateAccessToken();
     const refreshToken = await user.generateRefreshToken();
 
+    // update refreshToken field in user collection in database
     user.refreshToken = refreshToken;
     await user.save();
 
