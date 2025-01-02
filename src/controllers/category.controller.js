@@ -18,6 +18,23 @@ export const getUserCategories = asyncHandler(async (req, res) => {
     );
 });
 
+export const getSpecificCategory = asyncHandler(async (req, res) => {
+  const {category_id} = req.params;
+  const category = await Category.findById(category_id);
+  if (!category) throw new ApiError(404, "no such category found");
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        category,
+        req.user,
+        "user category fetched successfully"
+      )
+    );
+});
+
 export const addUserCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
   if (!name) throw new ApiError(400, "category name not parsed");
