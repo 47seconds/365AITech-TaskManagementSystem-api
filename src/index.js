@@ -7,7 +7,7 @@ connectDB()
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {
       console.log(
-        `server running on http://localhost:${process.env.PORT}/api/v1 ...`
+        `server running on http://localhost:${process.env.PORT}/api/ ...`
       );
     });
 
