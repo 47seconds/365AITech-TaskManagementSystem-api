@@ -37,7 +37,8 @@ export const userRegistration = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAccessRefreshTokens(user);
   const createdUser = { ...user };
   delete createdUser._doc.password;
-  delete createdUser._doc.refreshToken;
+  // delete createdUser._doc.refreshToken;
+  createdUser._doc.accessToken = accessToken;
 
   return res
     .cookie("accessToken", accessToken, {
@@ -79,7 +80,8 @@ export const userLogin = asyncHandler(async (req, res) => {
     await generateAccessRefreshTokens(loggedInUser);
   loggedInUser = { ...user };
   delete loggedInUser._doc.password;
-  delete loggedInUser._doc.refreshToken;
+  // delete loggedInUser._doc.refreshToken;
+  loggedInUser._doc.accessToken = accessToken;
 
   return res
     .cookie("accessToken", accessToken, {

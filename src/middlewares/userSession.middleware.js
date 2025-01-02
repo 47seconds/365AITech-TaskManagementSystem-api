@@ -18,7 +18,7 @@ export const userSession = async (req, res, next) => {
   const cookieRefreshToken = req.cookies.refreshToken;
 
   // If both are missing, therefore user needs to login again.
-  if (!(cookieAccessToken && cookieRefreshToken)) return next ? next() : false;
+  if (!(cookieAccessToken || cookieRefreshToken)) return next ? next() : false;
 
   let decodedAccessToken;
 
